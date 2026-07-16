@@ -19,6 +19,10 @@ from app.database import Base
 
 
 class FeedbackType(str, enum.Enum):
+    article_rating = "article_rating"
+    bug_report = "bug_report"
+    feature_request = "feature_request"
+    general = "general"
     ARTICLE_RATING = "article_rating"
     BUG_REPORT = "bug_report"
     FEATURE_REQUEST = "feature_request"

@@ -22,6 +22,15 @@ from app.database import Base
 
 
 class AuditAction(str, enum.Enum):
+    create = "create"
+    update = "update"
+    delete = "delete"
+    status_change = "status_change"
+    role_change = "role_change"
+    ban = "ban"
+    unban = "unban"
+    revert = "revert"
+    reindex = "reindex"
     CREATE = "create"
     UPDATE = "update"
     DELETE = "delete"

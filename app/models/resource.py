@@ -31,6 +31,12 @@ from app.database import Base
 
 
 class ResourceType(str, enum.Enum):
+    tool = "tool"
+    template = "template"
+    guide = "guide"
+    video = "video"
+    link = "link"
+    document = "document"
     TOOL = "tool"
     TEMPLATE = "template"
     GUIDE = "guide"

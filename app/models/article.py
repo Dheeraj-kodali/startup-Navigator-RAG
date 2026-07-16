@@ -36,6 +36,10 @@ from app.database import Base
 
 
 class ArticleStatus(str, enum.Enum):
+    draft = "draft"
+    review = "review"
+    published = "published"
+    archived = "archived"
     DRAFT = "draft"
     REVIEW = "review"
     PUBLISHED = "published"
