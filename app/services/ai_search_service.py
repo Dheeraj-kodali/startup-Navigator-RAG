@@ -84,7 +84,7 @@ class AISearchService:
     def _get_vector_store(self) -> Chroma:
         """Helper to safely initialize vector store using the dedicated chromadb_groq directory."""
         return Chroma(
-            persist_directory="./chromadb_groq",
+            persist_directory=settings.CHROMA_DB_DIR,
             embedding_function=self._embeddings
         )
 
@@ -168,7 +168,7 @@ class AISearchService:
             Chroma.from_documents(
                 documents=chunks,
                 embedding=self._embeddings,
-                persist_directory="./chromadb_groq"
+                persist_directory=settings.CHROMA_DB_DIR
             )
             logger.info("indexing_completed", chunks=len(chunks))
             return {"success": True, "indexed_chunks": len(chunks)}

@@ -25,7 +25,10 @@ from sqlalchemy import func
 
 router = APIRouter(prefix="/knowledge", tags=["Knowledge Base"])
 
-UPLOAD_DIR = "./uploads"
+from app.config import get_settings
+
+settings = get_settings()
+UPLOAD_DIR = settings.UPLOAD_DIR
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt", ".md"}
 
 # Ensure upload directory exists
