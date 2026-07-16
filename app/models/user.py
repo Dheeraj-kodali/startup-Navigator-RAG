@@ -40,9 +40,9 @@ class User(Base):
     password_hash = Column(String(255), nullable=True)
     name = Column(String(255), nullable=False)
     avatar_url = Column(String(500), nullable=True)
-    role = Column(SAEnum(UserRole, name="user_role"), default=UserRole.USER, nullable=False, index=True)
+    role = Column(SAEnum(UserRole, name="user_role", values_callable=lambda x: [e.value for e in x]), default=UserRole.USER, nullable=False, index=True)
     auth_provider = Column(
-        SAEnum(AuthProvider, name="auth_provider"),
+        SAEnum(AuthProvider, name="auth_provider", values_callable=lambda x: [e.value for e in x]),
         default=AuthProvider.CREDENTIALS,
         nullable=False,
     )
