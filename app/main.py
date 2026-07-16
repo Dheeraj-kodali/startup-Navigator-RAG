@@ -146,6 +146,25 @@ def create_app() -> FastAPI:
     async def api_health_check():
         return await health_check()
 
+    @app.get("/debug-path")
+    async def debug_path():
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        frontend_dir = os.path.join(base_dir, "frontend")
+        out_dir = os.path.join(frontend_dir, "out")
+        
+        return {
+            "cwd": os.getcwd(),
+            "file": __file__,
+            "abspath": os.path.abspath(__file__),
+            "base_dir": base_dir,
+            "frontend_exists": os.path.exists(frontend_dir),
+            "out_exists": os.path.exists(out_dir),
+            "out_is_dir": os.path.isdir(out_dir),
+            "base_contents": os.listdir(base_dir) if os.path.exists(base_dir) else [],
+            "frontend_contents": os.listdir(frontend_dir) if os.path.exists(frontend_dir) else [],
+            "out_contents": os.listdir(out_dir) if os.path.exists(out_dir) else [],
+        }
+
     # ── Frontend Static Files & SPA Routing ──────────────────
     frontend_out_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "out")
     if os.path.isdir(frontend_out_dir):
