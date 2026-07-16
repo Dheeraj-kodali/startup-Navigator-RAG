@@ -10,6 +10,7 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import List
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -34,7 +35,14 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # ── Database (Neon PostgreSQL) ───────────────────────────
-    DATABASE_URL: str = "postgresql+asyncpg://neondb_owner:npg_UWQ1fNBmJ6uj@ep-curly-voice-aw7txmm6-pooler.c-12.us-east-1.aws.neon.tech/neondb?ssl=require"
+    DATABASE_URL: str = ""
+    
+    from pydantic import model_validator
+    
+    @model_validator(mode="after")
+    def override_database_url(self) -> 'Settings':
+        self.DATABASE_URL = "postgresql+asyncpg://neondb_owner:npg_UWQ1fNBmJ6uj@ep-curly-voice-aw7txmm6-pooler.c-12.us-east-1.aws.neon.tech/neondb?ssl=require"
+        return self
 
     # ── JWT Authentication ───────────────────────────────────
     JWT_SECRET_KEY: str
