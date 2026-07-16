@@ -21,12 +21,18 @@ from app.database import Base
 
 
 class UserRole(str, enum.Enum):
+    user = "user"
+    admin = "admin"
+    super_admin = "super_admin"
     USER = "user"
     ADMIN = "admin"
     SUPER_ADMIN = "super_admin"
 
 
 class AuthProvider(str, enum.Enum):
+    credentials = "credentials"
+    google = "google"
+    github = "github"
     CREDENTIALS = "credentials"
     GOOGLE = "google"
     GITHUB = "github"
