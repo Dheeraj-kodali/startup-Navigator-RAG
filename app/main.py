@@ -17,9 +17,11 @@ from __future__ import annotations
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 
+import os
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
@@ -137,6 +139,46 @@ def create_app() -> FastAPI:
             "environment": settings.APP_ENV,
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
+
+    # ── Frontend Static Files & SPA Routing ──────────────────
+    frontend_out_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "out")
+    if os.path.isdir(frontend_out_dir):
+        # Mount Next.js internal static assets
+        _next_dir = os.path.join(frontend_out_dir, "_next")
+        if os.path.isdir(_next_dir):
+            app.mount("/_next", StaticFiles(directory=_next_dir), name="next-assets")
+
+        @app.get("/{full_path:path}")
+        async def serve_frontend(full_path: str):
+            if full_path.startswith("api/"):
+                return JSONResponse(status_code=404, content={"detail": "Not Found"})
+            
+            # Try exact file match (e.g. /favicon.ico)
+            exact_path = os.path.join(frontend_out_dir, full_path)
+            if os.path.isfile(exact_path):
+                return FileResponse(exact_path)
+            
+            # Try Next.js generated HTML route (e.g. /knowledge -> /knowledge.html)
+            html_path = os.path.join(frontend_out_dir, full_path.strip("/") + ".html")
+            if os.path.isfile(html_path):
+                return FileResponse(html_path)
+                
+            # Try trailingSlash Next.js export (e.g. /knowledge -> /knowledge/index.html)
+            dir_index_path = os.path.join(frontend_out_dir, full_path.strip("/"), "index.html")
+            if os.path.isfile(dir_index_path):
+                return FileResponse(dir_index_path)
+            
+            # Try index.html for index route
+            if not full_path or full_path == "/":
+                return FileResponse(os.path.join(frontend_out_dir, "index.html"))
+            
+            # Fallback to generic index for client-side routing, or return 404
+            fallback_path = os.path.join(frontend_out_dir, "404.html")
+            if os.path.isfile(fallback_path):
+                return FileResponse(fallback_path, status_code=404)
+            return JSONResponse(status_code=404, content={"detail": "Not Found"})
+    else:
+        logger.warning(f"Frontend static directory not found: {frontend_out_dir}")
 
     return app
 

@@ -50,7 +50,7 @@ export default function AdminResourcesCrud() {
   const fetchResources = async () => {
     setTimeout(() => setIsLoading(true), 0);
     try {
-      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+      const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
       const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;

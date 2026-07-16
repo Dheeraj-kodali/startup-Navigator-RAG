@@ -23,7 +23,7 @@ const Cell = dynamic(() => import("recharts").then(mod => mod.Cell), { ssr: fals
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 
 export default function AnalyticsDashboard() {
-  const [data, setData] = useState<unknown>(null);
+  const [data, setData] = useState<any>(null);
   const [timeRange, setTimeRange] = useState("all");
   const [isLoading, setIsLoading] = useState(true);
 
@@ -263,7 +263,7 @@ export default function AnalyticsDashboard() {
                     <td colSpan={3} className="px-5 py-8 text-center text-muted-foreground">No document citations yet</td>
                   </tr>
                 ) : (
-                  top_documents.map((doc: unknown, i: number) => (
+                  top_documents.map((doc: any, i: number) => (
                     <tr key={i} className="hover:bg-muted/20 transition-colors">
                       <td className="px-5 py-3 font-medium text-foreground max-w-[200px] truncate" title={doc.name}>📄 {doc.name}</td>
                       <td className="px-5 py-3 text-foreground">{doc.times_retrieved}</td>
@@ -298,7 +298,7 @@ export default function AnalyticsDashboard() {
                     <td colSpan={4} className="px-5 py-8 text-center text-muted-foreground">No recent search activity</td>
                   </tr>
                 ) : (
-                  recent_activity.map((act: unknown, i: number) => (
+                  recent_activity.map((act: any, i: number) => (
                     <tr key={i} className="hover:bg-muted/20 transition-colors">
                       <td className="px-5 py-3 text-muted-foreground">{act.user}</td>
                       <td className="px-5 py-3 font-medium text-foreground max-w-[150px] truncate" title={act.question}>{act.question}</td>
@@ -324,7 +324,7 @@ export default function AnalyticsDashboard() {
   );
 }
 
-function StatCard({ title, value, subtitle, icon: Icon, color }: { title: string, value: number, subtitle?: string, icon: unknown, color: string }) {
+function StatCard({ title, value, subtitle, icon: Icon, color }: { title: string, value: number, subtitle?: string, icon: any, color: string }) {
   return (
     <div className="rounded-xl border border-border bg-card p-5 shadow-sm hover:shadow-md transition-shadow">
       <div className="flex items-center justify-between">

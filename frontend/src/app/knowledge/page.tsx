@@ -33,7 +33,7 @@ interface KnowledgeStats {
   total_storage_bytes: number;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 export default function KnowledgeBasePage() {
   const { user } = useAuth();

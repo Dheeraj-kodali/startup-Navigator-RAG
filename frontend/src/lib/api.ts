@@ -2,13 +2,15 @@
  * Database and API communication client.
  */
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1";
+// In production (when served by FastAPI), this correctly uses the relative path.
+// During local frontend development, NEXT_PUBLIC_API_URL can be set to http://localhost:8000/api/v1
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "/api/v1";
 
 interface FetchOptions extends RequestInit {
   token?: string;
 }
 
-export async function apiRequest<T = unknown>(
+export async function apiRequest<T = any>(
   endpoint: string,
   options: FetchOptions = {}
 ): Promise<T> {
@@ -53,23 +55,23 @@ export async function apiRequest<T = unknown>(
 }
 
 export const api = {
-  get: <T = unknown>(endpoint: string, options?: FetchOptions) =>
+  get: <T = any>(endpoint: string, options?: FetchOptions) =>
     apiRequest<T>(endpoint, { method: "GET", ...options }),
     
-  post: <T = unknown>(endpoint: string, body?: unknown, options?: FetchOptions) =>
+  post: <T = any>(endpoint: string, body?: any, options?: FetchOptions) =>
     apiRequest<T>(endpoint, {
       method: "POST",
       body: JSON.stringify(body),
       ...options,
     }),
     
-  patch: <T = unknown>(endpoint: string, body?: unknown, options?: FetchOptions) =>
+  patch: <T = any>(endpoint: string, body?: any, options?: FetchOptions) =>
     apiRequest<T>(endpoint, {
       method: "PATCH",
       body: JSON.stringify(body),
       ...options,
     }),
     
-  delete: <T = unknown>(endpoint: string, options?: FetchOptions) =>
+  delete: <T = any>(endpoint: string, options?: FetchOptions) =>
     apiRequest<T>(endpoint, { method: "DELETE", ...options }),
 };
