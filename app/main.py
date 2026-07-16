@@ -61,8 +61,8 @@ def create_app() -> FastAPI:
         title=settings.APP_NAME,
         version=settings.APP_VERSION,
         description="API for Startup Navigator — helping entrepreneurs navigate every stage of building a startup.",
-        docs_url="/docs" if not settings.is_production else None,
-        redoc_url="/redoc" if not settings.is_production else None,
+        docs_url="/docs",
+        redoc_url="/redoc",
         lifespan=lifespan,
     )
 
@@ -139,6 +139,12 @@ def create_app() -> FastAPI:
             "environment": settings.APP_ENV,
             "timestamp": datetime.now(timezone.utc).isoformat(),
         }
+
+    @app.get("/api", tags=["System"])
+    @app.get("/api/v1", tags=["System"])
+    @app.get("/api/v1/health", tags=["System"])
+    async def api_health_check():
+        return await health_check()
 
     # ── Frontend Static Files & SPA Routing ──────────────────
     frontend_out_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "out")
