@@ -10,7 +10,7 @@ services:
       - key: LOG_LEVEL
         value: INFO
       - key: DATABASE_URL
-        sync: false
+        value: postgresql+asyncpg://neondb_owner:npg_UWQ1fNBmJ6uj@ep-curly-voice-aw7txmm6-pooler.c-12.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - key: JWT_SECRET_KEY
         sync: false
       - key: GEMINI_API_KEY
