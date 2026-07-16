@@ -1,17 +1,13 @@
 """
 Resource model — external links, tools, templates tied to categories.
-
 Indexes:
   - ix_resources_category_type: Filter by category + type
   - ix_resources_category_sort: Sorted resources per category
   - ix_resources_featured: Featured resources across categories
 """
-
 from __future__ import annotations
-
 import enum
 import uuid
-
 from sqlalchemy import (
     Boolean,
     Column,
@@ -26,10 +22,7 @@ from sqlalchemy import (
     Uuid,
 )
 from sqlalchemy.orm import relationship
-
 from app.database import Base
-
-
 class ResourceType(str, enum.Enum):
     tool = "tool"
     template = "template"
@@ -37,17 +30,8 @@ class ResourceType(str, enum.Enum):
     video = "video"
     link = "link"
     document = "document"
-    TOOL = "tool"
-    TEMPLATE = "template"
-    GUIDE = "guide"
-    VIDEO = "video"
-    LINK = "link"
-    DOCUMENT = "document"
-
-
 class Resource(Base):
     __tablename__ = "resources"
-
     id = Column(Uuid(as_uuid=True), primary_key=True, default=uuid.uuid4)
     category_id = Column(
         Uuid(as_uuid=True), ForeignKey("categories.id", ondelete="CASCADE"), nullable=False, index=True
@@ -68,7 +52,6 @@ class Resource(Base):
     updated_at = Column(
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
     )
-
     # ── Indexes ───────────────────────────────────────────────
     __table_args__ = (
         Index("ix_resources_category_type", "category_id", "resource_type"),
@@ -76,9 +59,7 @@ class Resource(Base):
         Index("ix_resources_featured", "is_featured",
               postgresql_where=Column("is_featured").is_(True)),
     )
-
     # ── Relationships ─────────────────────────────────────────
     category = relationship("Category", back_populates="resources")
-
     def __repr__(self) -> str:
         return f"<Resource '{self.title[:40]}' ({self.resource_type.value})>"

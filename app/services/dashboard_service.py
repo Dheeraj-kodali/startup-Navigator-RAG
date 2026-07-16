@@ -37,12 +37,12 @@ class DashboardService:
 
         published_articles = (
             await self.db.execute(
-                select(func.count()).where(Article.status == ArticleStatus.PUBLISHED)
+                select(func.count()).where(Article.status == ArticleStatus.published)
             )
         ).scalar() or 0
         draft_articles = (
             await self.db.execute(
-                select(func.count()).where(Article.status == ArticleStatus.DRAFT)
+                select(func.count()).where(Article.status == ArticleStatus.draft)
             )
         ).scalar() or 0
         total_bookmarks = (await self.db.execute(select(func.count()).select_from(Bookmark))).scalar() or 0
@@ -123,7 +123,7 @@ class DashboardService:
     async def get_popular_articles(self, limit: int = 10) -> list:
         stmt = (
             select(Article)
-            .where(Article.status == ArticleStatus.PUBLISHED)
+            .where(Article.status == ArticleStatus.published)
             .order_by(Article.view_count.desc())
             .limit(limit)
         )
@@ -164,7 +164,7 @@ class DashboardService:
         # Recent published articles
         articles_stmt = (
             select(Article)
-            .where(Article.status == ArticleStatus.PUBLISHED)
+            .where(Article.status == ArticleStatus.published)
             .order_by(Article.published_at.desc().nulls_last())
             .limit(limit // 2)
         )

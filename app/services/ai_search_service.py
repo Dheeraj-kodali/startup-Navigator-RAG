@@ -94,7 +94,7 @@ class AISearchService:
             return {"success": False, "message": "Langchain or embeddings models are not initialized."}
 
         # 1. Fetch data from DB
-        articles_stmt = select(Article).where(Article.status == ArticleStatus.PUBLISHED)
+        articles_stmt = select(Article).where(Article.status == ArticleStatus.published)
         articles_result = await self.db.execute(articles_stmt)
         articles = articles_result.scalars().all()
 
@@ -621,7 +621,7 @@ class AISearchService:
         """Fallback keyword search directly against SQL database when LLM/Vector stores are offline."""
         search_term = f"%{query.strip()}%"
         stmt = select(Article).where(
-            Article.status == ArticleStatus.PUBLISHED,
+            Article.status == ArticleStatus.published,
             Article.title.ilike(search_term)
         ).limit(3)
         

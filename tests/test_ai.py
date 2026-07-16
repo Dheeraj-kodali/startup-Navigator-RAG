@@ -85,7 +85,7 @@ async def test_ai_search_fallback_pipeline(
         title="SAFE Fundraising Standards",
         excerpt="An intro to seed round fundraising using SAFEs.",
         content_markdown="# SAFE standard\nThis explains SAFEs.",
-        status=ArticleStatus.PUBLISHED,
+        status=ArticleStatus.published,
     )
     db_session.add(article)
     await db_session.commit()

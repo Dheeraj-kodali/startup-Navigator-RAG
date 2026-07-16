@@ -41,7 +41,7 @@ class ArticleService:
             slug=slug,
             status=status,
             read_time_minutes=self._estimate_read_time(kwargs.get("content_markdown", "")),
-            published_at=datetime.now(timezone.utc) if status == ArticleStatus.PUBLISHED else None,
+            published_at=datetime.now(timezone.utc) if status == ArticleStatus.published else None,
             **{k: v for k, v in kwargs.items() if k != "slug"},
         )
         self.db.add(article)
@@ -99,8 +99,8 @@ class ArticleService:
         query = select(Article)
 
         if published_only:
-            query = query.where(Article.status == ArticleStatus.PUBLISHED)
-            count_stmt = count_stmt.where(Article.status == ArticleStatus.PUBLISHED)
+            query = query.where(Article.status == ArticleStatus.published)
+            count_stmt = count_stmt.where(Article.status == ArticleStatus.published)
         elif status:
             query = query.where(Article.status == ArticleStatus(status))
             count_stmt = count_stmt.where(Article.status == ArticleStatus(status))
@@ -131,7 +131,7 @@ class ArticleService:
     async def get_featured_articles(self, limit: int = 10) -> List[Article]:
         stmt = (
             select(Article)
-            .where(Article.status == ArticleStatus.PUBLISHED, Article.is_featured == True)
+            .where(Article.status == ArticleStatus.published, Article.is_featured == True)
             .order_by(Article.published_at.desc())
             .limit(limit)
         )
@@ -197,7 +197,7 @@ class ArticleService:
     # ── Delete ───────────────────────────────────────────────
     async def delete_article(self, article_id: UUID) -> None:
         article = await self.get_article_by_id(article_id)
-        article.status = ArticleStatus.ARCHIVED
+        article.status = ArticleStatus.archived
         await self.db.flush()
         logger.info("article_archived", article_id=str(article_id))
         # Remove from vector index since it is archived

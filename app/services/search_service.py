@@ -37,7 +37,7 @@ class SearchService:
         search_term = f"%{query.strip()}%"
 
         stmt = select(Article).where(
-            Article.status == ArticleStatus.PUBLISHED,
+            Article.status == ArticleStatus.published,
             or_(
                 Article.title.ilike(search_term),
                 Article.excerpt.ilike(search_term),
@@ -45,7 +45,7 @@ class SearchService:
             ),
         )
         count_stmt = select(func.count()).select_from(Article).where(
-            Article.status == ArticleStatus.PUBLISHED,
+            Article.status == ArticleStatus.published,
             or_(
                 Article.title.ilike(search_term),
                 Article.excerpt.ilike(search_term),

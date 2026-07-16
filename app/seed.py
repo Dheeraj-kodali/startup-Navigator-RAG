@@ -251,7 +251,7 @@ async def seed_database():
                         category_id=cat_id,
                         author_id=admin.id,
                         slug=slugify_title(art_info["title"]),
-                        status=ArticleStatus.PUBLISHED,
+                        status=ArticleStatus.published,
                         published_at=datetime.now(timezone.utc),
                         content_html=f"<p>{art_info['excerpt']}</p>", # simple mock html conversion
                         **art_info
