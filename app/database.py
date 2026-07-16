@@ -44,6 +44,10 @@ print("="*50, flush=True)
 engine = create_async_engine(
     settings.DATABASE_URL,
     echo=settings.DEBUG and not settings.is_production,
+    connect_args={
+        "statement_cache_size": 0,
+        "prepared_statement_cache_size": 0,
+    },
     **db_kwargs
 )
 
