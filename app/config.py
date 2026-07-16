@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     PORT: int = 8000
 
     # ── Database (Neon PostgreSQL) ───────────────────────────
-    DATABASE_URL: str
+    DATABASE_URL: str = "postgresql+asyncpg://neondb_owner:npg_UWQ1fNBmJ6uj@ep-curly-voice-aw7txmm6-pooler.c-12.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 
     # ── JWT Authentication ───────────────────────────────────
     JWT_SECRET_KEY: str
