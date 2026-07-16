@@ -166,7 +166,11 @@ def create_app() -> FastAPI:
         }
 
     # ── Frontend Static Files & SPA Routing ──────────────────
-    frontend_out_dir = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "frontend", "out")
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    frontend_out_dir = os.path.join(base_dir, ".render_public")
+    if not os.path.isdir(frontend_out_dir):
+        frontend_out_dir = os.path.join(base_dir, "frontend", "out")
+        
     if os.path.isdir(frontend_out_dir):
         # Mount Next.js internal static assets
         _next_dir = os.path.join(frontend_out_dir, "_next")
