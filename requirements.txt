@@ -48,8 +48,8 @@ chromadb==0.6.3
 groq==1.5.0
 sentence-transformers==2.7.0
 fastembed==0.8.0
-chromadb==0.5.0
-transformers==5.13.1
+transformers==4.40.0
+langchain-core==0.3.63
 
 # --- Dev Tools ---
 ruff==0.9.3
