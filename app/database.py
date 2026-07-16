@@ -15,14 +15,12 @@ from app.config import get_settings
 settings = get_settings()
 
 # ── Engine ────────────────────────────────────────────────────
-db_kwargs = {}
-if not settings.DATABASE_URL.startswith("sqlite"):
-    db_kwargs.update({
-        "pool_size": 5,
-        "max_overflow": 10,
-        "pool_pre_ping": True,
-        "pool_recycle": 300,
-    })
+db_kwargs = {
+    "pool_size": 5,
+    "max_overflow": 10,
+    "pool_pre_ping": True,
+    "pool_recycle": 300,
+}
 
 engine = create_async_engine(
     settings.DATABASE_URL,
